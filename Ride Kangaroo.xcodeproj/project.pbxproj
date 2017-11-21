@@ -318,6 +318,8 @@
 		F8721EE71E73E10A00AD2E94 /* GooglePlaces.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8721EE61E73E10A00AD2E94 /* GooglePlaces.framework */; };
 		F8721EE91E73E11A00AD2E94 /* GooglePlaces.bundle in Resources */ = {isa = PBXBuildFile; fileRef = F8721EE81E73E11A00AD2E94 /* GooglePlaces.bundle */; };
 		F8A3EB541E7A9D8300A9BB4D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8A3EB531E7A9D8200A9BB4D /* Launch Screen.storyboard */; };
+		FF1B991C1FC4122C0041BCCF /* checkc.png in Resources */ = {isa = PBXBuildFile; fileRef = FF1B991B1FC4122C0041BCCF /* checkc.png */; };
+		FF1B991E1FC412330041BCCF /* uncheckc.png in Resources */ = {isa = PBXBuildFile; fileRef = FF1B991D1FC412330041BCCF /* uncheckc.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -818,6 +820,8 @@
 		F8721EE81E73E11A00AD2E94 /* GooglePlaces.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlaces.bundle; sourceTree = "<group>"; };
 		F8A3EB531E7A9D8200A9BB4D /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		F8C12E481F4DC36D00070A2E /* Ride Kangaroo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Ride Kangaroo.entitlements"; sourceTree = "<group>"; };
+		FF1B991B1FC4122C0041BCCF /* checkc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checkc.png; sourceTree = "<group>"; };
+		FF1B991D1FC412330041BCCF /* uncheckc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uncheckc.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1545,6 +1549,8 @@
 				F85AF07D1E72BDF7000B2CE1 /* PickupDownArrow.png */,
 				F85AF0811E72C3DE000B2CE1 /* iconXmark.png */,
 				1E6ED4381DF99BC1001F264D /* gradient_line.png */,
+				FF1B991B1FC4122C0041BCCF /* checkc.png */,
+				FF1B991D1FC412330041BCCF /* uncheckc.png */,
 				043299271A076F67007D20ED /* Login & Register */,
 				046C10C41A04C08500204150 /* FeedBack */,
 				04EB176E19F2636100D79E5D /* Navigation Bar */,
@@ -1907,6 +1913,7 @@
 				04EB178919F2636100D79E5D /* loading_1@2x.png in Resources */,
 				1E6ED4371DF9748D001F264D /* ScheduleTableCell.xib in Resources */,
 				04EB179619F2636B00D79E5D /* button_limo_pressed.png in Resources */,
+				FF1B991E1FC412330041BCCF /* uncheckc.png in Resources */,
 				0453192E19FE41EA000F3050 /* diners.png in Resources */,
 				04EB178319F2636100D79E5D /* reveal-icon@2x.png in Resources */,
 				0453193C19FE41EA000F3050 /* visa@2x.png in Resources */,
@@ -1982,6 +1989,7 @@
 				0421A31A1A0A2FBA00BCB578 /* nf.png in Resources */,
 				0453192B19FE41EA000F3050 /* cvc-amex@2x.png in Resources */,
 				14D4BC881A3AA7B000D1F304 /* Localizable.strings in Resources */,
+				FF1B991C1FC4122C0041BCCF /* checkc.png in Resources */,
 				0454551D1A08DCAB009F45D1 /* icon_time.png in Resources */,
 				0432993B1A077342007D20ED /* ub__button_googleplus_pressed.png in Resources */,
 				0453192919FE41EA000F3050 /* amex@2x.png in Resources */,

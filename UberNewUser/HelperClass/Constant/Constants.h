@@ -6,13 +6,13 @@
 //#define Google_Map_Key @"AIzaSyC3-0ZsCBKFQvm1pjZOup9b2-4PtL_4P4w"           
 //#define GOOGLE_KEY_NEW @"AIzaSyCLDSZl4y2CfTWwPzJ933jS2X5jOpDFkEI"
 
-#define RIDE_LATER_URL @""
+#define RIDE_LATER_URL @"http://ridex.allstarsoftwareinc.com/user/"
 
-#define API_URL @""
-#define SERVICE_URL @""
+#define API_URL @"http://ridex.allstarsoftwareinc.com/user/"
+#define SERVICE_URL @"http://ridex.allstarsoftwareinc.com/"
 
 #define Address_URL @"https://maps.googleapis.com/maps/api/geocode/json?"
-#define PRIVACY_URL @""
+#define PRIVACY_URL @"http://ridex.allstarsoftwareinc.com"
 
 #define Google_Map_API_Key @"AIzaSyCm5KPAkfY861LBkm5SIAFyUg4ZXuPNX-0"
 #define Google_Map_Server_Key @"AIzaSyDTdXrdBfdjBBCiRienAEPunX5PMtsQwx0"

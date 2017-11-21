@@ -291,8 +291,8 @@ NSString *seperatorImageName = nil;
 
 
 #pragma mark - Custom UI Methods
--(void)createClockView{
-    
+-(void)createClockView
+{
     hoursCircle = [[UIView alloc] initWithFrame:CGRectMake(0,50,200, 200)];
     hoursCircle.alpha = 0.8;
     hoursCircle.layer.cornerRadius = hoursCircle.frame.size.width/2;
@@ -301,7 +301,7 @@ NSString *seperatorImageName = nil;
     [self addSubview:hoursCircle];
     //Adding the Hours Number on hours Circle.
     [self addNumbers:TRUE];
-    
+
     minutesCircle = [[UIView alloc] initWithFrame:CGRectMake(50,50,150, 150)];
     minutesCircle.alpha = 0.0;
     minutesCircle.layer.cornerRadius = minutesCircle.frame.size.width/2;
@@ -310,40 +310,40 @@ NSString *seperatorImageName = nil;
     [self addSubview:minutesCircle];
     //Adding the Minutes Number on Minutes Circle.
     [self addNumbers:FALSE];
-    
+
     //View to Display the Selected Time.
     selectedTimeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, hoursCircle.frame.origin.y -20)];
     selectedTimeView.backgroundColor = clockBackgroundColor;
-    
-    hoursButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.origin.x +50 , selectedTimeView.frame.size.height/2 -25, 60, 50)];
+
+    hoursButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.origin.x +30 , selectedTimeView.frame.size.height/2 -10, 50, 30)];
     [hoursButton setTitle:@"12" forState:UIControlStateNormal];
     [hoursButton setTitleColor:selectedTimeColor forState:UIControlStateNormal];
-    [hoursButton.titleLabel setFont:[UIFont boldSystemFontOfSize:45]];
+    [hoursButton.titleLabel setFont:[UIFont boldSystemFontOfSize:25]];
     [hoursButton setBackgroundColor:[UIColor clearColor]];
     [hoursButton addTarget:self action:@selector(showHourClock) forControlEvents:UIControlEventTouchUpInside];
     [selectedTimeView addSubview:hoursButton];
-    
+
     //Creating Seperator Label.
-    
-    seperatorLineView = [[UIView alloc] initWithFrame:CGRectMake(hoursButton.frame.origin.x + hoursButton.frame.size.width+10 ,hoursButton.frame.origin.y+10 , 10,30)];
+
+    seperatorLineView = [[UIView alloc] initWithFrame:CGRectMake(hoursButton.frame.origin.x + hoursButton.frame.size.width+10 ,hoursButton.frame.origin.y , 10,10)];
     [seperatorLineView setBackgroundColor:[UIColor clearColor]];
     [selectedTimeView addSubview:seperatorLineView];
     [self addTimeSeperatorWith:CGRectMake(kColonOrigin,6,kColonWidth,kColonHeight )];
     [self addTimeSeperatorWith:CGRectMake(kColonOrigin,22,kColonWidth,kColonHeight)];
-    
+
     //Creating Minute Label.
-    
-    minuteButton = [[UIButton alloc] initWithFrame:CGRectMake(seperatorLineView.frame.origin.x +seperatorLineView.frame.size.width+10 , hoursButton.frame.origin.y, 60, 50)];
+
+    minuteButton = [[UIButton alloc] initWithFrame:CGRectMake(seperatorLineView.frame.origin.x +seperatorLineView.frame.size.width+10 , selectedTimeView.frame.size.height/2 -10, 50, 30)];
     [minuteButton setTitle:@"00" forState:UIControlStateNormal];
     [minuteButton setTitleColor:textColor forState:UIControlStateNormal];
-    [minuteButton.titleLabel setFont:[UIFont boldSystemFontOfSize:45]];
+    [minuteButton.titleLabel setFont:[UIFont boldSystemFontOfSize:25]];
     [minuteButton setBackgroundColor:[UIColor clearColor]];
     [minuteButton addTarget:self action:@selector(showMinutesClock) forControlEvents:UIControlEventTouchUpInside];
     [selectedTimeView addSubview:minuteButton];
-    
+
     //Creating TimeSystem Label.
-    
-    timeModeLabel = [[UIButton alloc] initWithFrame:CGRectMake(minuteButton.frame.origin.x + minuteButton.frame.size.width+10, hoursButton.frame.origin.y+20, 50, 30)];
+
+    timeModeLabel = [[UIButton alloc] initWithFrame:CGRectMake(minuteButton.frame.origin.x + minuteButton.frame.size.width+10, selectedTimeView.frame.size.height/2 -10, 50, 30)];
     [timeModeLabel setTitle:@"AM" forState:UIControlStateNormal];
     [timeModeLabel setTitleColor:textColor forState:UIControlStateNormal];
     [timeModeLabel.titleLabel setFont:[UIFont boldSystemFontOfSize:22]];
@@ -352,7 +352,7 @@ NSString *seperatorImageName = nil;
     [timeModeLabel addTarget:self action:@selector(changeTimeSystem:) forControlEvents:UIControlEventTouchUpInside];
     [selectedTimeView addSubview:timeModeLabel];
     [self addSubview:selectedTimeView];
-    
+
     //Creating AM button.
     amButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [amButton setFrame:CGRectMake(hoursCircle.frame.origin.x ,hoursCircle.frame.origin.y + hoursCircle.frame.size.height + 10, 40, 40)];
@@ -364,8 +364,8 @@ NSString *seperatorImageName = nil;
     [amButton setBackgroundColor:clockPointerColor];
     [amButton.layer setCornerRadius:amButton.frame.size.height/2];
     [self addSubview:amButton];
-    
-    
+
+
     //Creating PM button.
     pmButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [pmButton setFrame:CGRectMake(hoursCircle.frame.origin.x + hoursCircle.frame.size.width -30,amButton.frame.origin.y, 40, 40)];
@@ -376,15 +376,15 @@ NSString *seperatorImageName = nil;
     [pmButton setTitleColor:textColor forState:UIControlStateNormal];
     [pmButton setBackgroundColor:clockBackgroundColor];
     [pmButton.layer setCornerRadius:pmButton.frame.size.height/2];
-    
+
     [self addSubview:pmButton];
-    
-    
+
+
     lineView = [[UIView alloc] initWithFrame:CGRectMake(0,amButton.frame.origin.y + amButton.frame.size.height + 10,self.frame.size.width , 1)];
     [lineView setBackgroundColor:textColor];
     [self addSubview:lineView];
-    
-    
+
+
     doneButton = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width/2 - 50, lineView.frame.origin.y +( self.frame.size.height-lineView.frame.origin.y)/2-25, 100, 50)];
     [doneButton setTitle:@"Done" forState:UIControlStateNormal];
     [doneButton setTitleColor:[UberStyleGuide colorDefault] forState:UIControlStateNormal];
@@ -392,9 +392,9 @@ NSString *seperatorImageName = nil;
     [doneButton addTarget:self action:@selector(timeSelectionComplete:) forControlEvents:UIControlEventTouchUpInside];
     [doneButton.layer setCornerRadius:5.0];
     [self addSubview:doneButton];
-    
+
     //Creating Clock Hand View.
-    
+
     clockHandView = [[UIView alloc] initWithFrame:CGRectMake(self.frame.size.width/2-15, hoursCircle.frame.origin.y+5, 30, 190)];
     [clockHandView.layer setCornerRadius:5.0];
     [clockHandView setBackgroundColor:[UIColor clearColor]];
@@ -403,6 +403,7 @@ NSString *seperatorImageName = nil;
     //Creating the clock Hand.
     [self drawClockHand];
 }
+
 -(void)addTimeSeperatorWith:(CGRect)rect{
     UIBezierPath *selectorCirclePath = [UIBezierPath bezierPathWithRect:rect];
   

@@ -11,9 +11,13 @@
 
 @interface RegisterVC : BaseVC<UITextFieldDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate,UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate>
 {
-    
+
 }
 ///// Outlets
+
+@property ( nonatomic) bool maleBtnSelected;
+@property ( nonatomic) bool femaleBtnSelected;
+
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet JVFloatLabeledTextField *txtFirstName;
 @property (weak, nonatomic) IBOutlet JVFloatLabeledTextField *txtLastName;
@@ -71,5 +75,14 @@
 @property (nonatomic, weak) IBOutlet UITableView *tblCountry;
 @property (nonatomic, weak) IBOutlet JVFloatLabeledTextField *txtSearchText;
 @property (nonatomic, weak) IBOutlet UIView *viewforCountrySearch;
+
+//Natarajan
+
+@property (weak, nonatomic) IBOutlet UILabel *genderLbl;
+@property (weak, nonatomic) IBOutlet UIButton *maleBtn;
+@property (weak, nonatomic) IBOutlet UILabel *maleLbl;
+@property (weak, nonatomic) IBOutlet UIButton *femaleBtn;
+@property (weak, nonatomic) IBOutlet UILabel *femaleLbl;
+
 
 @end

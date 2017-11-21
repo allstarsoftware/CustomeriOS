@@ -109,6 +109,13 @@
     [super viewWillAppear:animated];
 //    UINavigationController *nav=(UINavigationController *)self.revealViewController.frontViewController;
 //    frontVC=[nav.childViewControllers objectAtIndex:0];
+    NSUserDefaults *pref=[NSUserDefaults standardUserDefaults];
+    NSMutableDictionary *dictInfo=[pref objectForKey:PREF_LOGIN_OBJECT];
+
+    [self.imgProfilePic downloadFromURL:[dictInfo valueForKey:@"picture"] withPlaceholder:nil];
+    self.lblName.font=[UberStyleGuide fontRegular:18.0f];
+    self.lblName.text=[NSString stringWithFormat:@"%@ %@",[dictInfo valueForKey:@"first_name"],[dictInfo valueForKey:@"last_name"]];
+    arrIdentifire=[[NSMutableArray alloc]initWithObjects:SEGUE_PROFILE,SEGUE_TO_HISTORY,SEGUE_PAYMENT,SEGUE_TO_SCHEDULE, nil];
 }
 
 -(void)handleUpdatedData:(NSNotification *)notification

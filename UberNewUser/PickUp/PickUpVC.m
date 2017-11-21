@@ -174,11 +174,9 @@
   {
       UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Network Status",[prefl objectForKey:@"TranslationDocumentName"], nil) message:NSLocalizedStringFromTable(@"NO_INTERNET",[prefl objectForKey:@"TranslationDocumentName"], nil) delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"OK",[prefl objectForKey:@"TranslationDocumentName"], nil), nil];
       [alert show];
-     
   }
-    
-    
 }
+
 -(void)viewWillAppear:(BOOL)animated
 {
       [super viewWillAppear:animated];
@@ -186,8 +184,8 @@
       [self SetLocalization];
       [self customFont];
       [self customSetup];
-
 }
+
 -(void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
@@ -1500,7 +1498,7 @@
                     
                     
                     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-                    [manager POST:@"" parameters:dictParam progress:nil success:^(NSURLSessionTask *task, id responseObject)
+                    [manager POST:@"http://ridex.allstarsoftwareinc.com/user/dog/addschedule" parameters:dictParam progress:nil success:^(NSURLSessionTask *task, id responseObject)
                     {
                         [[AppDelegate sharedAppDelegate]hideLoadingView];
                         [self.viewForRideLater setHidden:YES];
@@ -1700,13 +1698,12 @@
 
 -(void)getAllApplicationType
 {
-    
     if([[AppDelegate sharedAppDelegate]connected])
     {
         NSMutableDictionary *dictParam=[[NSMutableDictionary alloc]init];
         [dictParam setValue:strForLatitude forKey:@"user_lat"];
         [dictParam setValue:strForLongitude forKey:@"user_long"];
-        
+        arrType=[[NSMutableArray alloc]init];
         AFNHelper *afn=[[AFNHelper alloc]initWithRequestMethod:POST_METHOD];
         [afn getDataFromPath:FILE_APPLICATION_TYPE withParamData:dictParam withBlock:^(id response, NSError *error)
          {
@@ -1721,8 +1718,31 @@
                  {
                      arrForApplicationType=[[NSMutableArray alloc]init];
                      NSMutableArray *arr=[[NSMutableArray alloc]init];
-                     [arr addObjectsFromArray:[response valueForKey:@"types"]];
-                     arrType=[response valueForKey:@"types"];
+                     //[arr addObjectsFromArray:[response valueForKey:@"types"]];
+                     NSMutableArray *arrtypewithoutvalidation=[[NSMutableArray alloc]init];
+
+                     arrtypewithoutvalidation=[response valueForKey:@"types"];
+                     NSString *usergend=[pref valueForKey:@"usergender"];
+                     if([usergend isEqual:@"m"])
+                     {
+                         for(NSArray * a in arrtypewithoutvalidation)
+                         {
+                             if([[a valueForKey:@"name"] isEqual:@"Pink"])
+                             {
+
+                             }
+                             else
+                             {
+                                 [arrType addObject:a];
+                                 [arr addObject:a];
+                             }
+                         }
+                     }
+                     else
+                     {
+                         arrType=[response valueForKey:@"types"];
+                         [arr addObjectsFromArray:[response valueForKey:@"types"]];
+                     }
                      for(NSMutableDictionary *dict in arr)
                      {
                          CarTypeDataModal *obj=[[CarTypeDataModal alloc]init];
@@ -2106,7 +2126,7 @@
                  arrDriver=[[NSMutableArray alloc] init];
              }
              [self showProvider];
-             [self getAllApplicationType];
+             //[self getAllApplicationType];
              
          }];
         
@@ -2663,12 +2683,7 @@
 {
     NSMutableDictionary *dictParam=[[NSMutableDictionary alloc] init];
     [dictParam setObject:str forKey:PARAM_ADDRESS];
-    //    [dictParam setObject:GOOGLE_KEY forKey:PARAM_KEY];
     [dictParam setObject:Google_Map_API_Key forKey:PARAM_KEY];
-   // AFNHelper *afn=[[AFNHelper alloc]initWithRequestMethod:GET_METHOD];
- //   [afn getAddressFromGooglewithParamData:dictParam withBlock:^(id response, NSError *error)
-    // {
-          //Pickup Location New fixing done on 17th febraury
     NSString *esc_addr =  [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *req = [NSString stringWithFormat:@"http://maps.google.com/maps/api/geocode/json?sensor=false&address=%@", esc_addr];
     NSString *result = [NSString stringWithContentsOfURL:[NSURL URLWithString:req] encoding:NSUTF8StringEncoding error:NULL];
@@ -2676,39 +2691,27 @@
     NSError *e;
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&e];
     NSLog(@"WE are testing destination address    %@    %@",[[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lat"], [[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lng"]);
-    
-         if([dict objectForKey:@"results"])
-         {
-            
-             NSArray *arrAddress=[dict objectForKey:@"results"];
-             if ([arrAddress count] > 0)
-                 
-             {
-                 self.txtAddress.text=[[arrAddress objectAtIndex:0] valueForKey:@"formatted_address"];
-                 NSDictionary *dictLocation=[[[arrAddress objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"];
-                 strForLatitude=[dictLocation valueForKey:@"lat"];
-                 strForLongitude=[dictLocation valueForKey:@"lng"];
-                // [self getETA:[arrDriver objectAtIndex:0]];
-                 CLLocationCoordinate2D coor;
-                 coor.latitude=[strForLatitude doubleValue];
-                 coor.longitude=[strForLongitude doubleValue];
-                 pref = [NSUserDefaults standardUserDefaults];
-                 [pref setObject:strForLatitude forKey:@"Pickup_Latitude"];
-                 [pref setObject:strForLongitude forKey:@"Pickup_Longitude"];
-                 [pref synchronize];
-                 GMSCameraUpdate *updatedCamera = [GMSCameraUpdate setTarget:coor zoom:14];
-                 [mapView_ animateWithCameraUpdate:updatedCamera];
-                 
-//                 [CATransaction begin];
-//                 [CATransaction setValue:[NSNumber numberWithFloat:2.0] forKey:kCATransactionAnimationDuration];
-//                 GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude: coor.latitude
-//                                                                         longitude: coor.longitude zoom: 14];
-//                 [mapView_ animateToCameraPosition: camera];
-//                 [CATransaction commit];
-                 // [self getProviders];
-             }
-         }
-     //}];
+    if([dict objectForKey:@"results"])
+    {
+        NSArray *arrAddress=[dict objectForKey:@"results"];
+        if ([arrAddress count] > 0)
+        {
+            self.txtAddress.text=[[arrAddress objectAtIndex:0] valueForKey:@"formatted_address"];
+            NSDictionary *dictLocation=[[[arrAddress objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"];
+            strForLatitude=[dictLocation valueForKey:@"lat"];
+            strForLongitude=[dictLocation valueForKey:@"lng"];
+            // [self getETA:[arrDriver objectAtIndex:0]];
+            CLLocationCoordinate2D coor;
+            coor.latitude=[strForLatitude doubleValue];
+            coor.longitude=[strForLongitude doubleValue];
+            pref = [NSUserDefaults standardUserDefaults];
+            [pref setObject:strForLatitude forKey:@"Pickup_Latitude"];
+            [pref setObject:strForLongitude forKey:@"Pickup_Longitude"];
+            [pref synchronize];
+            GMSCameraUpdate *updatedCamera = [GMSCameraUpdate setTarget:coor zoom:14];
+            [mapView_ animateWithCameraUpdate:updatedCamera];
+        }
+    }
 }
 
 -(CLLocationCoordinate2D) getLocationFromAddressString: (NSString*) addressStr
@@ -2719,47 +2722,42 @@
     NSString *result = [NSString stringWithContentsOfURL:[NSURL URLWithString:req] encoding:NSUTF8StringEncoding error:NULL];
     if (result)
     {
-        
         NSData *jsonData = [result dataUsingEncoding:NSUTF8StringEncoding];
         NSError *e;
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:&e];
-        NSLog(@"WE are testing destination address    %@    %@",[[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lat"], [[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lng"]);
-        
-        latitude = [[[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lat"] doubleValue];
-        longitude = [[[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lng"] doubleValue];
-     
-        StrForDropLat = [[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lat"];
-       StrForDropLong = [[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lng"];
-        pref = [NSUserDefaults standardUserDefaults];
-        [pref setObject:StrForDropLat forKey:@"Destination_Latitude"];
-        [pref setObject:StrForDropLong forKey:@"Destination_Longitude"];
-        [pref synchronize];
+        if([dict valueForKey:@"error_message"])
+        {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Bwite" message:[dict valueForKey:@"error_message"] delegate:self cancelButtonTitle:nil otherButtonTitles:NSLocalizedStringFromTable(@"OK",[prefl objectForKey:@"TranslationDocumentName"], nil), nil];
+            [alert show];
+        }
+        else
+        {
+            if([dict valueForKey:@"results"])
+            {
+                NSArray *arrAddress=[dict objectForKey:@"results"];
+                if ([arrAddress count] > 0)
+                {
+                    NSLog(@"WE are testing destination address    %@    %@",[[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lat"], [[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lng"]);
 
-        /*NSScanner *scanner = [NSScanner scannerWithString:result];
-        if ([scanner scanUpToString:@"\"lat\" :" intoString:nil] && [scanner scanString:@"\"lat\" :" intoString:nil]) {
-            [scanner scanDouble:&latitude];
-            if ([scanner scanUpToString:@"\"lng\" :" intoString:nil] && [scanner scanString:@"\"lng\" :" intoString:nil]) {
-                [scanner scanDouble:&longitude];
+                    latitude = [[[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lat"] doubleValue];
+                    longitude = [[[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lng"] doubleValue];
+
+                    StrForDropLat = [[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lat"];
+                    StrForDropLong = [[[[[dict objectForKey:@"results"] objectAtIndex:0] valueForKey:@"geometry"] valueForKey:@"location"] valueForKey:@"lng"];
+                    pref = [NSUserDefaults standardUserDefaults];
+                    [pref setObject:StrForDropLat forKey:@"Destination_Latitude"];
+                    [pref setObject:StrForDropLong forKey:@"Destination_Longitude"];
+                    [pref synchronize];
+                }
             }
-        }*/
+        }
     }
     CLLocationCoordinate2D center;
     center.latitude=latitude;
     center.longitude = longitude;
-//    GMSCameraUpdate *updatedCamera2 = [GMSCameraUpdate setTarget:center zoom:14];
-//    [mapView_ animateWithCameraUpdate:updatedCamera2];
-//    
-//    [CATransaction begin];
-//    [CATransaction setValue:[NSNumber numberWithFloat:2.0] forKey:kCATransactionAnimationDuration];
-//    GMSCameraPosition *camera = [GMSCameraPosition cameraWithLatitude: center.latitude
-//                                                            longitude: center.longitude zoom: 14];
-//    [mapView_ animateToCameraPosition: camera];
-//    [CATransaction commit];
     NSLog(@"View Controller get Location Logitute : %f",center.latitude);
     NSLog(@"View Controller get Location Latitute : %f",center.longitude);
-    
     return center;
-    
 }
 
 #pragma mark -
@@ -2817,7 +2815,7 @@
                          }
                          // [self setTimerToCheckDriverStatus];
                          self.navigationController.navigationBarHidden=NO;
-                         [self getAllApplicationType];
+                         //[self getAllApplicationType];
                          [super setNavBarTitle:TITLE_PICKUP];
                          [self customSetup];
                          [self checkForAppStatus];

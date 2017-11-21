@@ -11,7 +11,7 @@
 "SELECT_PHOTO"="Select Photo";
 "TAKE_PHOTO"="Take Photo";
 "CANCEL"="CANCEL";
-"Currency" = " PKR";
+"Currency" = " $";
 "OK"="OK";
 "CAM_NOT_AVAILABLE" = "Camera Not Available";
 "PLEASE_FIRST_NAME"="Please enter a first name.";

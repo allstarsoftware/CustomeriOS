@@ -56,12 +56,12 @@
     //[super setNavBarTitle:TITLE_PROFILE];
     self.viewForEmailInfo.hidden=YES;
     [super setBackBarItem];
-    [self setDataForUserInfo];
+
     [self.proPicImgv applyRoundedCornersFullWithColor:[UIColor whiteColor]];
     
     self.btnEdit.hidden=NO;
     self.btnUpdate.hidden=YES;
-
+    [self textDisable];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -71,8 +71,9 @@
     [self.txtLastName setTintColor:[UIColor whiteColor]];
     [self SetLocalization];
     [self customFont];
+    [self setDataForUserInfo];
     
-    [self textDisable];
+
 }
 - (void)viewDidAppear:(BOOL)animated
 {

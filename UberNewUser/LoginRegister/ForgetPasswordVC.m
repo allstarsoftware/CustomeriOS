@@ -68,9 +68,8 @@
         
         NSMutableDictionary *dictParam=[[NSMutableDictionary alloc]init];
         [dictParam setValue:self.txtEmail.text forKey:PARAM_EMAIL];
-        
-        
-        
+        [dictParam setValue:@"2" forKey:@"type"];
+
         AFNHelper *afn=[[AFNHelper alloc]initWithRequestMethod:POST_METHOD];
         [afn getDataFromPath:FILE_FORGET_PASSWORD withParamData:dictParam withBlock:^(id response, NSError *error)
          {

@@ -66,7 +66,7 @@
     [super setNavBarTitle:TITLE_REGISTER];
     
     arrForCountry=[[NSMutableArray alloc]init];
-    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, 500)];
+    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, 600)];
     strForRegistrationType=@"manual";
     appDelegate=[AppDelegate sharedAppDelegate];
     self.viewForEmailInfo.hidden=YES;
@@ -102,6 +102,14 @@
     singleTapGestureRecognizer.numberOfTapsRequired = 1;
     [self.view addGestureRecognizer:singleTapGestureRecognizer];
 
+    self.maleBtn.layer.cornerRadius=self.maleBtn.frame.size.width/2;
+    self.femaleBtn.layer.cornerRadius=self.femaleBtn.frame.size.width/2;
+
+    _maleBtnSelected=YES;
+    _femaleBtnSelected=NO;
+    [_maleBtn setBackgroundImage:[UIImage imageNamed:@"checkc.png"] forState:UIControlStateNormal];
+    [_femaleBtn setBackgroundImage:[UIImage imageNamed:@"uncheckc.png"] forState:UIControlStateNormal];
+
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -118,9 +126,27 @@
         [self.viewForOTP setHidden:NO];
         [self.navigationController setNavigationBarHidden:YES];
     }
-    
-
 }
+
+-(IBAction)genderBtnPressed:(id)sender
+{
+    if(_maleBtnSelected==YES)
+    {
+        [_maleBtn setBackgroundImage:[UIImage imageNamed:@"uncheckc.png"] forState:UIControlStateNormal];
+        [_femaleBtn setBackgroundImage:[UIImage imageNamed:@"checkc.png"] forState:UIControlStateNormal];
+        _maleBtnSelected=NO;
+        _femaleBtnSelected=YES;
+    }
+    else
+    {
+        [_maleBtn setBackgroundImage:[UIImage imageNamed:@"checkc.png"] forState:UIControlStateNormal];
+        [_femaleBtn setBackgroundImage:[UIImage imageNamed:@"uncheckc.png"] forState:UIControlStateNormal];
+        _maleBtnSelected=YES;
+        _femaleBtnSelected=NO;
+    }
+}
+
+
 -(void)SetLocalization
 {
     self.lblEmailInfo.text=NSLocalizedStringFromTable(@"INFO_EMAIL", [prefl objectForKey:@"TranslationDocumentName"],nil);
@@ -270,7 +296,7 @@
     }
     else if(textField==self.txtNumber)
     {
-        offset=CGPointMake(0, 240);
+        offset=CGPointMake(0, 340);
         [self.scrollView setContentOffset:offset animated:YES];
     }
     else if(textField==self.txtAddress)
@@ -304,7 +330,7 @@
     else if(textField==self.txtPassword)
         [self.txtConfirmPassword becomeFirstResponder];
     else if(textField==self.txtConfirmPassword)
-        [self.txtNumber becomeFirstResponder];
+        [textField resignFirstResponder];
     else if(textField == self.txtSearchText)
         if (textField.text.length == 0) {
             arrTableData = [NSMutableArray arrayWithArray:arrOriginalData];
@@ -416,7 +442,9 @@
     [dictParam setValue:@"" forKey:PARAM_COUNTRY];
     [dictParam setValue:@"" forKey:PARAM_ZIPCODE];
     [dictParam setValue:strForRegistrationType forKey:PARAM_LOGIN_BY];
-    
+
+
+
     if([strForRegistrationType isEqualToString:@"facebook"])
         [dictParam setValue:strForSocialId forKey:PARAM_SOCIAL_UNIQUE_ID];
     else if ([strForRegistrationType isEqualToString:@"google"])
@@ -449,7 +477,8 @@
                     [pref setObject:[response valueForKey:@"id"] forKey:PREF_USER_ID];
                     [pref setObject:[response valueForKey:@"is_referee"] forKey:PREF_IS_REFEREE];
                     [pref setBool:YES forKey:PREF_IS_LOGIN];
-                    if([[response valueForKey:@"otp_status"] boolValue]) {
+                    if([[response valueForKey:@"otp_status"] boolValue])
+                    {
                         [self.viewForOTP setHidden:NO];//OTP
                         [self.navigationController setNavigationBarHidden:YES];
                         [[NSUserDefaults standardUserDefaults] setObject:@"otp_true_not_verified" forKey:@"otp_status_key"];
@@ -753,7 +782,16 @@
                 [dictParam setValue:@"" forKey:PARAM_COUNTRY];
                 [dictParam setValue:@"" forKey:PARAM_ZIPCODE];
                 [dictParam setValue:strForRegistrationType forKey:PARAM_LOGIN_BY];
-                
+                NSString *gendertype;
+                if (self.maleBtnSelected==NO)
+                {
+                    gendertype=@"f";
+                }
+                else
+                {
+                    gendertype=@"m";
+                }
+                [dictParam setObject:gendertype forKey:@"gender"];
                 if([strForRegistrationType isEqualToString:@"facebook"])
                     [dictParam setValue:strForSocialId forKey:PARAM_SOCIAL_UNIQUE_ID];
                 else if ([strForRegistrationType isEqualToString:@"google"])
@@ -791,6 +829,7 @@
                                 [pref setObject:getUser.id forKey:PREF_USER_ID];
                                 [pref setObject:getUser.is_referee forKey:PREF_IS_REFEREE];
                                 [pref setBool:YES forKey:PREF_IS_LOGIN];
+                                [pref setObject:[[response valueForKey:@"user"] valueForKey:@"gender"] forKey:@"usergender"];
                                 if([getUser.otp_status boolValue]) {
                                     [self.viewForOTP setHidden:NO];//OTP
                                     [self.navigationController setNavigationBarHidden:YES];

@@ -321,8 +321,8 @@
                          [pref setObject:getUser.phone forKey:PREF_MOBILE_NO];
                          [pref setObject:getUser.is_referee forKey:PREF_IS_REFEREE];
                          [pref setBool:YES forKey:PREF_IS_LOGIN];
+                         [pref setObject:[[response valueForKey:@"user"] valueForKey:@"gender"] forKey:@"usergender"];
                          [pref synchronize];
-                         
                          [self performSegueWithIdentifier:SEGUE_SUCCESS_LOGIN sender:self];
                      }
                      else
